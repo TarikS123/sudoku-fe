@@ -35,6 +35,8 @@ export class BoardComponent implements OnInit {
     
   }
 
+  
+
   isNumberButtonDisabled(number: number): boolean {
     const count = this.countNumberOccurrences(number);
     return count >= 9;
