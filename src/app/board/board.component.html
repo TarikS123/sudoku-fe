@@ -34,7 +34,10 @@
                [(ngModel)]="cell.value"
                [style.color]="cell.editable ? '#00ffff' : '#ff1493'"
                [placeholder]="cell.value !== null ? cell.value : ''"
-               [readonly]="!cell.editable"></div>
+               [readonly]="!cell.editable"
+               (click)="onCellClick(i, j)"
+               ></div>
+               
       </div>
     </div>
   </div>
