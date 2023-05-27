@@ -1,3 +1,5 @@
+<app-navigation-bar></app-navigation-bar>
+
 <div class="buttons" style="width: 100%; display: flex; align-items: center; justify-content: center; margin-top: 10px; color: #00e6e6;">
   <button *ngIf="timer === 0" (click)="startTimer()">Start</button>
   <div class="timer-box" *ngIf="timer > 0">
@@ -26,16 +28,17 @@
 
 
 
+
 <div class="sudoku-container" *ngIf="timer > 0">
   <div class="sudoku-board">
     <div class="row" *ngFor="let row of sudokuBoard; let i = index">
       <div class="cell" *ngFor="let cell of row; let j = index" (click)="onCellChange(i, j)">
         <div *ngIf="timer > 0"><input type="text" 
+          [ngClass]="{ 'highlighted': cell.highlighted }"
                [(ngModel)]="cell.value"
                [style.color]="cell.editable ? '#00ffff' : '#ff1493'"
                [placeholder]="cell.value !== null ? cell.value : ''"
                [readonly]="!cell.editable"
-          
                ></div>
                
       </div>
@@ -45,7 +48,8 @@
     <button *ngFor="let number of numbers" (click)="selectNumber(number)"
                 [style.backgroundColor]="selectedNumber === number ? '#00e6e6' : '#00ffff'"
                 [disabled]="isNumberButtonDisabled(number)">{{ number }}</button>
-    
+                <button (click)="undoNumber()">Undo</button>
+                <button (click)="toggleEraseMode()">Erase</button>
     <button (click)="submitBoard()">Submit Board</button>
   </div>
 </div>

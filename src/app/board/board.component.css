@@ -6,7 +6,7 @@
 
 .sudoku-container {
   text-align: center;
-  margin-top: 25px;
+  margin-top: px;
 }
 
 .sudoku-board {
@@ -38,6 +38,10 @@ input {
   background-color: transparent;
 }
 
+.highlighted {
+  background-color: yellow;
+}
+
 /* Add specific styles for editable numbers */
 input.editable {
   color: #00ffff;
@@ -61,7 +65,7 @@ button {
   margin-top: 20px;
   padding: 10px 20px;
   font-size: 18px;
-  background-color: #00ffff;
+  background-color: lightgray;
   color: #000;
   border: none;
   outline: none;
