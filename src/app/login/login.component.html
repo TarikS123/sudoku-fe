@@ -1,24 +1,23 @@
-   <body>
-      <div class="wrapper">
-         <div class="title">
-            Login Form
-         </div>
-         <form action="#">
-            <div class="field">
-               <input type="text" required>
-               <label>Email Address</label>
-            </div>
-            <div class="field">
-               <input type="password" required>
-               <label>Password</label>
-            </div>
-            
-            <div class="field">
-               <input type="submit" value="Login">
-            </div>
-            <div class="signup-link">
-               Not a member? <a href="#">Signup now</a>
-            </div>
-         </form>
-      </div>
-   </body>
+<body>
+   <div class="wrapper">
+     <div class="title">
+       Login Form
+     </div>
+     <form (ngSubmit)="login()" [formGroup]="loginForm">
+       <div class="field">
+         <input type="text" required name="username" id="username" formControlName="username">
+         <label>Username</label>
+       </div>
+       <div class="field">
+         <input type="password" required name="password" formControlName="password">
+         <label>Password</label>
+       </div>
+       <div class="field">
+         <input type="submit">
+       </div>
+       <div class="signup-link">
+         Not a member? <a routerLink="/signup">Signup now</a>
+       </div>
+     </form>
+   </div>
+</body>
