@@ -1,6 +1,6 @@
 <app-navigation-bar></app-navigation-bar>
 
-<div class="buttons" style="width: 100%; display: flex; align-items: center; justify-content: center; margin-top: 10px; color: #00e6e6;">
+<div class="buttons" style="width: 100%;margin-bottom: 15px; display: flex; align-items: center; justify-content: center; margin-top: 10px; color: #321e1e;">
   <button *ngIf="timer === 0" (click)="startTimer()">Start</button>
   <div class="timer-box" *ngIf="timer > 0">
     {{ timer }} seconds
@@ -19,7 +19,7 @@
   <div class="buttons" *ngIf="timer > 0">
     <button *ngFor="let number of numbers"
             (click)="selectNumber(number)"
-            [style.backgroundColor]="selectedNumber === number ? '#00e6e6' : '#00ffff'"></button>
+            [style.backgroundColor]="selectedNumber === number ? '#00e6e6' : '#321e1e'"></button>
     <button (click)="submitBoard()">Submit Board</button>
   </div>
 </div>
@@ -36,7 +36,7 @@
         <div *ngIf="timer > 0"><input type="text" 
           [ngClass]="{ 'highlighted': cell.highlighted }"
                [(ngModel)]="cell.value"
-               [style.color]="cell.editable ? '#00ffff' : '#ff1493'"
+               [style.color]="cell.editable ? '#321e1e' : '#116d6e'"
                [placeholder]="cell.value !== null ? cell.value : ''"
                [readonly]="!cell.editable"
                ></div>
@@ -46,13 +46,19 @@
   </div>
   <div class="buttons" *ngIf="timer > 0">
     <button *ngFor="let number of numbers" (click)="selectNumber(number)"
-                [style.backgroundColor]="selectedNumber === number ? '#00e6e6' : '#00ffff'"
+                [style.backgroundColor]="selectedNumber === number ? '#4e3636' : '#321e1e'"
+                [style.transform]="selectedNumber===number ? 'scaleY(110%)': ''"
                 [disabled]="isNumberButtonDisabled(number)">{{ number }}</button>
-                <button (click)="undoNumber()">Undo</button>
-                <button (click)="toggleEraseMode()">Erase</button>
+                <button (click)="undoNumber()"
+                >Undo</button>
+                <button (click)="toggleEraseMode()"
+                [style.transform]="this.eraseMode==true ? 'scaleY(110%)': ''"
+                [style.bacgroundColor]="this.eraseMode==true ? '#4e3636' : ''"
+                >Erase</button>
     <button (click)="submitBoard()">Submit Board</button>
   </div>
 </div>
+<app-leaderboard></app-leaderboard>
 
 
 

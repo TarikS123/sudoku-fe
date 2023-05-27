@@ -11,9 +11,9 @@
 
 .sudoku-board {
   display: inline-block;
-  border: 4px solid #00ffff;
-  background-color: #000;
-  box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+  border: 4px solid #321e1e;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(78, 54, 54, 0.5);
 }
 
 .row {
@@ -22,8 +22,8 @@
 
 .cell {
   flex: 1;
-  border: 2px solid #00ffff;
-  background-color: #222;
+  border: 2px solid #321e1e;
+  background-color: #b0a4a4;
   position: relative;
 }
 
@@ -39,17 +39,17 @@ input {
 }
 
 .highlighted {
-  background-color: yellow;
+  background-color: #f4eee0;
 }
 
 /* Add specific styles for editable numbers */
 input.editable {
-  color: #00ffff;
+  color: #321e1e;
 }
 
 /* Add specific styles for non-editable numbers */
 input.non-editable {
-  color: #ff1a8c;
+  color: #fff;
 }
 
 /* Add thicker borders for every 9 cells */
@@ -65,14 +65,16 @@ button {
   margin-top: 20px;
   padding: 10px 20px;
   font-size: 18px;
-  background-color: lightgray;
-  color: #000;
+  background-color: rgb(78, 54, 54);
+  color: white;
   border: none;
   outline: none;
   cursor: pointer;
-  box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+  box-shadow: 0 0 10px rgba(78, 54, 54, 0.5);
+  transition: all .2s ease-in;
 }
 
 button:hover {
-  background-color: #00e6e6;
+  transform: scaleY(110%);
+  background-color: #321e1e;
 }

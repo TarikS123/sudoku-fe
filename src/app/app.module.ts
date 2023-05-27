@@ -10,13 +10,15 @@ import { SignupComponent } from './signup/signup.component';
 import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
 import { NewgameComponent } from './newgame/newgame.component';
 import { HttpClientModule } from '@angular/common/http';
+import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/new', pathMatch: 'full' },
   { path: 'new', component: NewgameComponent},
   { path: 'board', component: BoardComponent},
   { path: 'login', component: LoginComponent},
-  { path: 'signup', component: SignupComponent}, 
+  { path: 'signup', component: SignupComponent},
+  { path: 'leaderboard', component: LeaderboardComponent}, 
 ];
 
 @NgModule({
@@ -27,6 +29,7 @@ const routes: Routes = [
     SignupComponent,
     NavigationBarComponent,
     NewgameComponent,
+    LeaderboardComponent,
     
     
   ],
