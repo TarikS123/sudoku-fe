@@ -3,6 +3,7 @@ import { AppComponent } from '../app.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BoardResponse } from './board-response.interface';
 import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 
 interface Cell {
@@ -20,10 +21,9 @@ interface user{
   styleUrls: ['./board.component.css']
 })
 export class BoardComponent implements OnInit {
-  constructor(private http: HttpClient, private router:Router) { 
 
+  constructor(private http: HttpClient, private router:Router, private routeAc: ActivatedRoute) { }
 
-  }
   myBoardFromDB!: BoardResponse; //used on init when getting from API
   id:number | undefined;
   
@@ -138,6 +138,7 @@ eraseNumber() {
       .subscribe(
         (response) => {
           this.myBoardFromDB = response;
+          localStorage.setItem('board', this.myBoardFromDB.id.toString());
           console.log('Object fetched successfully', this.myBoardFromDB);
 
           // interface Cell { JUST FOR REFERENCE

@@ -9,10 +9,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let player of leaderboardData; let i = index">
+        <tr *ngFor="let player of lista; let i = index">
           <td>{{ i + 1 }}</td>
-          <td>{{ player.name }}</td>
-          <td>{{ player.time }}</td>
+          <td>{{ player.userId }}</td>
+          <td>{{ player.seconds }}</td>
         </tr>
       </tbody>
     </table>
