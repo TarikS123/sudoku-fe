@@ -32,7 +32,7 @@ export class SignupComponent implements OnInit {
         password: password
       };
 
-      this.http.post<any>('https://sudoku-be.herokuapp.com/register', payload)
+      this.http.post<string>('https://sudoku-be.herokuapp.com/register', payload)
         .subscribe(
           (response) => {
             console.log('Registration successful', response);
