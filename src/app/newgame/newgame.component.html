@@ -3,10 +3,10 @@
     <div class="difwrap">
         <p>Select difficulty</p>
         <div>
-            <a [routerLink]="">0</a>
-            <a [routerLink]="">1</a>
-            <a [routerLink]="">2</a>
-            <a [routerLink]="">3</a>
+            <a [routerLink]="['/board?difficulty=0']">Easy</a>
+            <a [routerLink]="['/board?difficulty=1']">Medium</a>
+            <a [routerLink]="['/board?difficulty=2']">Hard</a>
+            <a [routerLink]="['/board?difficulty=3']">Expert</a>
         </div>
         <a [routerLink]="['/board']" class="random">random</a>
     </div>

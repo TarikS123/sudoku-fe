@@ -21,21 +21,23 @@ interface user{
   styleUrls: ['./board.component.css']
 })
 export class BoardComponent implements OnInit {
+
   constructor(private http: HttpClient, private router:Router, private routeAc: ActivatedRoute) { }
+
   myBoardFromDB!: BoardResponse; //used on init when getting from API
   id:number | undefined;
   
   
   sudokuBoard: Cell[][] = [
-    [{ value: null,editable: true}, { value: null, editable: true},   { value: 1, editable: false },    { value: 9 ,editable: false},      { value: 8, editable: false }, { value: 4 ,editable: false }, { value: 7, editable: false }, { value: 6, editable: false }, { value: null , editable: true}],
-   [{ value: 6, editable: false},  { value: null, editable: true },  { value: 9,editable: false },     { value: null,editable: true},      { value: 5,editable: false  }, { value: 7 ,editable: false }, { value: 3,editable: false  }, { value: 8,editable: false  }, { value: null,editable: true  }],
-   [{ value:  8,editable: false},   { value: 2, editable: false },    { value: 7 ,editable: false},     { value: null ,editable: true},     { value: 1,editable: false }, { value: null ,editable: true}, { value: null,editable: true }, { value: null ,editable: true}, { value: null ,editable: true}],
-   [{ value: 9 ,editable: false},   { value: 6,editable: false },     { value: null ,editable: true},   { value: 3 ,editable:false},     { value: null,editable: true }, { value: 8 ,editable: false}, { value: 1,editable: false }, { value: null ,editable: true}, { value: 5,editable: false}],
-   [{ value: 1 ,editable: false},   { value: 8,editable: false },     { value: 5 ,editable: false},      { value: null ,editable: true},     { value: 2,editable: false }, { value: null ,editable: true}, { value: null,editable: true }, { value: 7 ,editable: false}, { value: 3 ,editable: false}],
-   [{ value: 3 ,editable: false},   { value: null,editable: true },   { value: null ,editable: true},   { value: null ,editable: true},     { value: null,editable: true }, { value: null ,editable: true}, { value: 2,editable: false }, { value: null ,editable: true}, { value:8 ,editable: false}],
-   [{ value: 2 ,editable: false},   { value: 1,editable: false },     { value: null ,editable: true},   { value: null ,editable: true},     { value: null,editable: true }, { value: null ,editable: true}, { value: null,editable: true }, { value: 3 ,editable: false}, { value: 6 ,editable: false}],
-   [{value: null, editable: true}, { value: null,editable: true },   { value: null ,editable: true},   { value: 1 ,editable: false},     { value: null,editable: true }, { value: null ,editable: true}, { value: null,editable: true }, { value: null ,editable: true}, { value: 4 ,editable:false}],
-   [{value: null, editable: true}, { value: 9,editable: false },     { value: 6 ,editable: false},     { value: null ,editable: true},     { value: null,editable: true }, { value: 2 ,editable: false}, { value: 5,editable: false }, { value: 1 ,editable: false}, { value: null ,editable: true}]
+    [{ value: null,editable: true}, { value: null, editable: true},   { value: null, editable: true },    { value: null ,editable: true},      { value: null, editable: true}, { value: null ,editable: true }, { value: null, editable: true }, { value: null, editable: true }, { value: null , editable: true}],
+    [{ value: null,editable: true}, { value: null, editable: true},   { value: null, editable: true },    { value: null ,editable: true},      { value: null, editable: true}, { value: null ,editable: true }, { value: null, editable: true }, { value: null, editable: true }, { value: null , editable: true}],
+    [{ value: null,editable: true}, { value: null, editable: true},   { value: null, editable: true },    { value: null ,editable: true},      { value: null, editable: true}, { value: null ,editable: true }, { value: null, editable: true }, { value: null, editable: true }, { value: null , editable: true}],
+    [{ value: null,editable: true}, { value: null, editable: true},   { value: null, editable: true },    { value: null ,editable: true},      { value: null, editable: true}, { value: null ,editable: true }, { value: null, editable: true }, { value: null, editable: true }, { value: null , editable: true}],
+    [{ value: null,editable: true}, { value: null, editable: true},   { value: null, editable: true },    { value: null ,editable: true},      { value: null, editable: true}, { value: null ,editable: true }, { value: null, editable: true }, { value: null, editable: true }, { value: null , editable: true}],
+    [{ value: null,editable: true}, { value: null, editable: true},   { value: null, editable: true },    { value: null ,editable: true},      { value: null, editable: true}, { value: null ,editable: true }, { value: null, editable: true }, { value: null, editable: true }, { value: null , editable: true}],
+    [{ value: null,editable: true}, { value: null, editable: true},   { value: null, editable: true },    { value: null ,editable: true},      { value: null, editable: true}, { value: null ,editable: true }, { value: null, editable: true }, { value: null, editable: true }, { value: null , editable: true}],
+    [{ value: null,editable: true}, { value: null, editable: true},   { value: null, editable: true },    { value: null ,editable: true},      { value: null, editable: true}, { value: null ,editable: true }, { value: null, editable: true }, { value: null, editable: true }, { value: null , editable: true}],
+    [{ value: null,editable: true}, { value: null, editable: true},   { value: null, editable: true },    { value: null ,editable: true},      { value: null, editable: true}, { value: null ,editable: true }, { value: null, editable: true }, { value: null, editable: true }, { value: null , editable: true}]
 
  
  ];
@@ -115,10 +117,23 @@ eraseNumber() {
       this.router.navigate(['/login']);
     }
     const token=localStorage.getItem('token');
+    const username=localStorage.getItem('username');
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
     const options = { headers: headers };
+    this.http.get<user>('https://sudoku-be.herokuapp.com/user/id/'+username, options)
+      .subscribe(
+        (response) => {
+          this.id=response.id;
+          console.log('ID returned', response);
+        },
+        (error) => {
+          console.error('Error while getting ID', error);
+        }
+      );
+
+
     this.http.get<BoardResponse>('https://sudoku-be.herokuapp.com/table', options)
       .subscribe(
         (response) => {
@@ -304,6 +319,25 @@ eraseNumber() {
   }
 
   submitBoard() {
+    if(!localStorage.getItem('token')){
+      this.router.navigate(['/login']);
+    }
+    const token=localStorage.getItem('token');
+    const username=localStorage.getItem('username');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    const options = { headers: headers };
+    this.http.get<user>('https://sudoku-be.herokuapp.com/user/id/'+username, options)
+      .subscribe(
+        (response) => {
+          this.id=response.id;
+          console.log('ID returned', response);
+        },
+        (error) => {
+          console.error('Error while getting ID', error);
+        }
+      );
     if (this.checkBoard()) {
       this.stopTimer();
       alert(`Congratulations! Sudoku board solved correctly. Time taken: ${this.timer} seconds.`);
@@ -332,7 +366,7 @@ eraseNumber() {
           seconds: this.timer
         };
 
-      this.http.post<any>('https://sudoku-be.herokuapp.com/record/app', payload, options)
+      this.http.post<any>('https://sudoku-be.herokuapp.com/record/add', payload, options)
         .subscribe(
           (response) => {
             

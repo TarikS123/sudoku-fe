@@ -30,8 +30,6 @@ const routes: Routes = [
     NavigationBarComponent,
     NewgameComponent,
     LeaderboardComponent,
-    
-    
   ],
   imports: [
     HttpClientModule,

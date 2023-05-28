@@ -48,4 +48,5 @@ export class LeaderboardComponent implements OnInit{
        console.log(this.lista);
   }
   
+
 }
