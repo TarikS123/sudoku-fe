@@ -8,10 +8,10 @@ import { Router } from '@angular/router';
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css']
 })
-export class SignupComponent {
-  loginForm!: FormGroup; 
+export class SignupComponent implements OnInit {
+  loginForm!: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private http: HttpClient, private router:Router) { }
+  constructor(private formBuilder: FormBuilder, private http: HttpClient, private router: Router) { }
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -20,17 +20,19 @@ export class SignupComponent {
       confirmPassword: ['', Validators.required]
     });
   }
-  signup(){
+
+  signup() {
     if (this.loginForm.valid) {
       const username = this.loginForm.get('username')?.value;
       const password = this.loginForm.get('password')?.value;
-  
+
       // Prepare the payload with the username and password
       const payload = {
         username: username,
         password: password
       };
-        this.http.post<any>('https://sudoku-be.herokuapp.com/register', payload)
+
+      this.http.post<any>('https://sudoku-be.herokuapp.com/register', payload)
         .subscribe(
           (response) => {
             console.log('Registration successful', response);
@@ -39,8 +41,7 @@ export class SignupComponent {
           (error) => {
             console.error('Registration failed', error);
           }
-        );    
+        );
     }
   }
-
 }

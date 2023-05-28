@@ -18,7 +18,6 @@ export class LeaderboardComponent {
   leaderboardData: User[] = [{name:'kenan',time:35},{name:'kenan',time:35},{name:'kenan',time:35},{name:'kenan',time:35},{name:'kenan',time:35},{name:'kenan',time:35},{name:'kenan',time:35},{name:'kenan',time:35}];
 
   // constructor(private leaderboardService: LeaderboardService) {} // Inject the leaderboard service
-
   // ngOnInit() {
   //   this.loadLeaderboardData();
   // }
