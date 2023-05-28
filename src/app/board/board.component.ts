@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AppComponent } from '../app.component';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { BoardResponse } from './board-response.interface';
+import { Router } from '@angular/router';
 
 
 interface Cell {
@@ -7,13 +10,20 @@ interface Cell {
   editable?: boolean;
   highlighted?: boolean; }
 
+interface user{
+  id:number;
+}
+
 @Component({
   selector: 'app-board',
   templateUrl: './board.component.html',
   styleUrls: ['./board.component.css']
 })
 export class BoardComponent implements OnInit {
-   
+  constructor(private http: HttpClient, private router:Router) { }
+  myBoardFromDB!: BoardResponse; //used on init when getting from API
+  id:number | undefined;
+  
   
   sudokuBoard: Cell[][] = [
     [{ value: null,editable: true}, { value: null, editable: true},   { value: 1, editable: false },    { value: 9 ,editable: false},      { value: 8, editable: false }, { value: 4 ,editable: false }, { value: 7, editable: false }, { value: 6, editable: false }, { value: null , editable: true}],
@@ -27,7 +37,8 @@ export class BoardComponent implements OnInit {
    [{value: null, editable: true}, { value: 9,editable: false },     { value: 6 ,editable: false},     { value: null ,editable: true},     { value: null,editable: true }, { value: 2 ,editable: false}, { value: 5,editable: false }, { value: 1 ,editable: false}, { value: null ,editable: true}]
 
  
- ];// fake conection to the db; 
+ ];
+ // fake conection to the db; 
 
  undoHistory: { value: number | null, row: number, col: number }[] = [];
  eraseMode: boolean = false;
@@ -99,7 +110,47 @@ eraseNumber() {
   intervalId: any;
 
   ngOnInit() {
+    if(!localStorage.getItem('token')){
+      this.router.navigate(['/login']);
+    }
+    const token=localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    const options = { headers: headers };
+    this.http.get<BoardResponse>('https://sudoku-be.herokuapp.com/table', options)
+      .subscribe(
+        (response) => {
+          this.myBoardFromDB = response;
+          console.log('Object fetched successfully', this.myBoardFromDB);
+
+          // interface Cell { JUST FOR REFERENCE
+          //   value: number | null; JUST FOR REFERENCE
+          //   editable?: boolean; JUST FOR REFERENCE
+          //   highlighted?: boolean; } JUST FOR REFERENCE
+          for(let i = 0; i < 9; i++){
+            for(let j = 0; j < 9; j++){
+              if(this.myBoardFromDB.table[i][j]!=0){
+                this.sudokuBoard[i][j].value=this.myBoardFromDB.table[i][j];
+              }
+              // if(this.myBoardFromDB.table[i][j]>0){
+              // this.sudokuBoard[i][j].editable=false;
+              // }
+              // else{
+              // this.sudokuBoard[i][j].editable=true;
+              // }
+            }
+          }
+          this.NormaliseTheBoard(this.sudokuBoard);
+
+
+        },
+        (error) => {
+          console.error('Error fetching object', error);
+        }
+      );
     
+
   }
 
 
@@ -254,6 +305,43 @@ eraseNumber() {
     if (this.checkBoard()) {
       this.stopTimer();
       alert(`Congratulations! Sudoku board solved correctly. Time taken: ${this.timer} seconds.`);
+      if(!localStorage.getItem('token')){
+        this.router.navigate(['/login']);
+      }
+      const token=localStorage.getItem('token');
+      const username=localStorage.getItem('username');
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${token}`
+      });
+      const options = { headers: headers };
+      this.http.get<user>('https://sudoku-be.herokuapp.com/user/id/'+username, options)
+        .subscribe(
+          (response) => {
+            this.id=response.id;
+            console.log('ID returned', response);
+          },
+          (error) => {
+            console.error('Error while getting ID', error);
+          }
+        );
+        const payload = {
+          tableId: this.myBoardFromDB.id,
+          userId: this.id,
+          seconds: this.timer
+        };
+
+      this.http.post<any>('https://sudoku-be.herokuapp.com/record/app', payload, options)
+        .subscribe(
+          (response) => {
+            
+            console.log('Object pushed to backend', response);
+            this.router.navigate(['/new']);
+          },
+          (error) => {
+            console.error('Error pushing record to database', error);
+          }
+        );
+
     } else {
       alert('Oops! Sudoku board is not solved correctly.');
     }
@@ -262,7 +350,7 @@ eraseNumber() {
   checkBoard(): boolean {
     // Check rows
     for (let row = 0; row < this.sudokuBoard.length; row++) {
-      const rowValues = this.sudokuBoard[row].map(cell => cell.value);
+      const rowValues = this.sudokuBoard[row].map((cell: { value: any; }) => cell.value);
       if (!this.isSetComplete(rowValues)) {
         return false;
       }
@@ -270,7 +358,7 @@ eraseNumber() {
 
     // Check columns
     for (let col = 0; col < this.sudokuBoard[0].length; col++) {
-      const colValues = this.sudokuBoard.map(row => row[col].value);
+      const colValues = this.sudokuBoard.map((row: { value: any; }[]) => row[col].value);
       if (!this.isSetComplete(colValues)) {
         return false;
       }

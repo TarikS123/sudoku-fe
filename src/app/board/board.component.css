@@ -71,7 +71,7 @@ button {
   outline: none;
   cursor: pointer;
   box-shadow: 0 0 10px rgba(78, 54, 54, 0.5);
-  transition: all .2s ease-in;
+  transition: all .2s cubic-bezier(0.26,-0.77, 0.24, 2.64);
 }
 
 button:hover {

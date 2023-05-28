@@ -3,24 +3,21 @@
        <div class="title">
           Sign Up Form
        </div>
-       <form action="#">
+       <form [formGroup]="loginForm" (ngSubmit)="signup()">
           <div class="field">
-             <input type="text" required>
+             <input type="text" name="username" id="username" formControlName="username" required>
              <label>User Name</label>
           </div>
           <div class="field">
-             <input type="password" required>
+             <input type="password" name="password" id="password" formControlName="password" required>
              <label>Password</label>
           </div>
           <div class="field">
-            <input type="password" required>
+            <input type="password" name="confirmPassword" id="confirmPassword" formControlName="confirmPassword" required>
             <label>Confirm Password</label>
          </div>
           <div class="field">
-             <input type="submit" value="Login">
-          </div>
-          <div class="signup-link">
-             Not a member? <a href="#">Signup now</a>
+             <input type="submit" value="signin">
           </div>
        </form>
     </div>

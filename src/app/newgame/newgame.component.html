@@ -1,3 +1,13 @@
-<app-navigation-bar></app-navigation-bar>
-<p>Difficulty</p>
-<a href="">0</a><a href="">1</a><a href="">2</a><a href="">3</a>
+<div class="wrap">
+    <app-navigation-bar></app-navigation-bar>
+    <div class="difwrap">
+        <p>Select difficulty</p>
+        <div>
+            <a [routerLink]="">0</a>
+            <a [routerLink]="">1</a>
+            <a [routerLink]="">2</a>
+            <a [routerLink]="">3</a>
+        </div>
+        <a [routerLink]="['/board']" class="random">random</a>
+    </div>
+</div>
