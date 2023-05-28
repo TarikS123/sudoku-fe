@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { AppModule } from '../app.module';
+import { LoginResponse } from './login-response.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -9,11 +11,11 @@ import { AppModule } from '../app.module';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  
+  token: string | undefined;
   loginForm!: FormGroup; 
 
   
-  constructor(private formBuilder: FormBuilder, private http: HttpClient) { }
+  constructor(private formBuilder: FormBuilder, private http: HttpClient, private router: Router) { }
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -27,23 +29,21 @@ export class LoginComponent {
       const username = this.loginForm.get('username')?.value;
       const password = this.loginForm.get('password')?.value;
 
-      // Prepare the payload with the username and password
+     
       const payload = {
         username: username,
         password: password
       };
 
-      // Make the HTTP POST request
-      this.http.post('https://sudoku-be.herokuapp.com/authenticate', payload)
+      this.http.post<LoginResponse>('https://sudoku-be.herokuapp.com/authenticate', payload)
         .subscribe(
           (response) => {
-            // Handle the success response here
-            console.log('Login successful', response);
-            
-            console.log(username);
+            this.token = response.token; 
+            localStorage.setItem('token', this.token);
+            localStorage.setItem('username', username);
+            this.router.navigate(['/new']);
           },
           (error) => {
-            // Handle the error response here
             console.error('Login failed', error);
           }
         );
