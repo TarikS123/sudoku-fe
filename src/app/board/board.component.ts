@@ -314,7 +314,7 @@ eraseNumber() {
         'Authorization': `Bearer ${token}`
       });
       const options = { headers: headers };
-      this.http.get<user>('https://sudoku-be.herokuapp.com/whatsmyid/'+username, options)
+      this.http.get<user>('https://sudoku-be.herokuapp.com/user/id/'+username, options)
         .subscribe(
           (response) => {
             this.id=response.id;
