@@ -1,6 +1,5 @@
 export interface LeaderboardResponse {
-    id: number;
-    tableId: number;
+    tableId: String;
     userId: number ;
     seconds: number;
 }

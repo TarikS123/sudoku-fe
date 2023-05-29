@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BoardResponse } from './board-response.interface';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
+import { GlobalShareService } from '../shared-data/globalShareService';
 
 
 interface Cell {
@@ -25,7 +26,8 @@ export class BoardComponent implements OnInit {
   constructor(private http: HttpClient, private router:Router, private routeAc: ActivatedRoute) { }
 
   myBoardFromDB!: BoardResponse; //used on init when getting from API
-  id:number | undefined;
+  iduser:number | undefined;
+  difficulty?:String;
   
   
   sudokuBoard: Cell[][] = [
@@ -124,43 +126,31 @@ eraseNumber() {
     const options = { headers: headers };
     this.http.get<user>('https://sudoku-be.herokuapp.com/user/id/'+username, options)
       .subscribe(
-        (response) => {
-          this.id=response.id;
-          console.log('ID returned', response);
-        },
-        (error) => {
-          console.error('Error while getting ID', error);
-        }
-      );
+          (response) => {
+            this.iduser=response.id;
+            console.log('ID returned', response);
+          },
+          (error) => {
+            console.error('Error while getting ID', error);
+          }
+        );
 
 
     this.http.get<BoardResponse>('https://sudoku-be.herokuapp.com/table', options)
       .subscribe(
         (response) => {
           this.myBoardFromDB = response;
-          localStorage.setItem('board', this.myBoardFromDB.id.toString());
-          console.log('Object fetched successfully', this.myBoardFromDB);
-
-          // interface Cell { JUST FOR REFERENCE
-          //   value: number | null; JUST FOR REFERENCE
-          //   editable?: boolean; JUST FOR REFERENCE
-          //   highlighted?: boolean; } JUST FOR REFERENCE
+          this.difficulty=response.difficulty;
+          sessionStorage.setItem('board', response.id.toString());
+          console.log('Object fetched successfully', response);
           for(let i = 0; i < 9; i++){
             for(let j = 0; j < 9; j++){
-              if(this.myBoardFromDB.table[i][j]!=0){
-                this.sudokuBoard[i][j].value=this.myBoardFromDB.table[i][j];
+              if(response.table[i][j]!=0){
+                this.sudokuBoard[i][j].value=response.table[i][j];
               }
-              // if(this.myBoardFromDB.table[i][j]>0){
-              // this.sudokuBoard[i][j].editable=false;
-              // }
-              // else{
-              // this.sudokuBoard[i][j].editable=true;
-              // }
             }
           }
           this.NormaliseTheBoard(this.sudokuBoard);
-
-
         },
         (error) => {
           console.error('Error fetching object', error);
@@ -177,7 +167,7 @@ eraseNumber() {
     return count >= 9;
   }
 
-  // Helper method to count the occurrences of a number in the Sudoku board
+
   countNumberOccurrences(number: number): number {
     let count = 0;
     for (let row = 0; row < this.sudokuBoard.length; row++) {
@@ -328,41 +318,14 @@ eraseNumber() {
       'Authorization': `Bearer ${token}`
     });
     const options = { headers: headers };
-    this.http.get<user>('https://sudoku-be.herokuapp.com/user/id/'+username, options)
-      .subscribe(
-        (response) => {
-          this.id=response.id;
-          console.log('ID returned', response);
-        },
-        (error) => {
-          console.error('Error while getting ID', error);
-        }
-      );
     if (this.checkBoard()) {
       this.stopTimer();
       alert(`Congratulations! Sudoku board solved correctly. Time taken: ${this.timer} seconds.`);
-      if(!localStorage.getItem('token')){
-        this.router.navigate(['/login']);
-      }
-      const token=localStorage.getItem('token');
-      const username=localStorage.getItem('username');
-      const headers = new HttpHeaders({
-        'Authorization': `Bearer ${token}`
-      });
+
       const options = { headers: headers };
-      this.http.get<user>('https://sudoku-be.herokuapp.com/user/id/'+username, options)
-        .subscribe(
-          (response) => {
-            this.id=response.id;
-            console.log('ID returned', response);
-          },
-          (error) => {
-            console.error('Error while getting ID', error);
-          }
-        );
         const payload = {
           tableId: this.myBoardFromDB.id,
-          userId: this.id,
+          userId: this.iduser,
           seconds: this.timer
         };
 
