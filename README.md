@@ -1,4 +1,5 @@
 # Sudoku App
+Url:  https://sudoku-dede-mi.netlify.app/
 
 The Sudoku App is a digital application designed to provide users with a platform to play and solve Sudoku puzzles. It aims to offer an intuitive and enjoyable experience for Sudoku enthusiasts of all skill levels. This README document provides an overview of the Sudoku App, its features, user interface, functionality, and technical requirements.
 
